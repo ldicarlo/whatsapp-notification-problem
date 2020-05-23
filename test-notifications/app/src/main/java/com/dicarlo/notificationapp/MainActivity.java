@@ -1,30 +1,23 @@
 package com.dicarlo.notificationapp;
 
-import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.IntentFilter;
+import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-import androidx.core.content.ContextCompat;
-
-import android.util.Log;
-import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
-
 import java.util.UUID;
-
-import static android.Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE;
-import static androidx.core.content.PermissionChecker.PERMISSION_DENIED;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,29 +26,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("notification","test");
+        Log.d("notification", "test");
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        int i = ContextCompat.checkSelfPermission(this, BIND_NOTIFICATION_LISTENER_SERVICE);
-        Log.d("notag", ""+i);
-        ActivityCompat.requestPermissions(MainActivity.this , new String[]{Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE}, 1);
-
         final NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "ID1")
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle("textTitle")
                 .setContentText("Content")
                 .setPriority(NotificationCompat.PRIORITY_HIGH);
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                // WRONG: get a random channel id every time
+                // WRONG: get a random channel id every then and now
                 String channelId = UUID.randomUUID().toString();
 
                 // But keep the same name
-                CharSequence name = "STILL THE SAME CHANNEL I PROMISE !";
+                CharSequence name = "Maybe the same channel. jk";
                 String description = "Annoying Notification";
 
                 // Not sure this change anything
@@ -69,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
                 // If there was channel before, delete it
                 if (lastNotificationChannel != null) {
-                    notificationManager.deleteNotificationChannel(lastNotificationChannel);
+                    //   notificationManager.deleteNotificationChannel(lastNotificationChannel);
                 }
 
                 // Set the last channel
